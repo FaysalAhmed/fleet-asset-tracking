@@ -2,7 +2,7 @@
 
 ## Project state
 
-Greenfield. No code exists yet. The sole artifact is `prd.md` (requirements, architecture, data model). Work is driven from 14 GitHub issues spanning 5 sprints.
+Work is driven from 14 GitHub issues spanning 5 sprints. The core pipeline is in progress — MQTT broker via Docker Compose, with InfluxDB bridge, API gateway, and frontend added in later sprints.
 
 ## Source of truth
 
@@ -24,12 +24,29 @@ Each issue must follow GitFlow:
 - `.git/` — VCS
 - `prd.md` — Product Requirements Document
 - `AGENTS.md` — This file
+- `docker-compose.yml` — Root Compose file (all services)
+- `mosquitto/` — MQTT broker (Dockerfile, config, ACLs)
+- `scripts/` — Utility scripts (password generation, etc.)
 
 ## Development commands
 
-No build system, tests, or tooling configured yet. First task for any agent adding tooling should create the appropriate config and update this file.
+### Start MQTT broker
+```
+docker compose up -d mosquitto
+```
+
+### Generate MQTT credentials
+```
+.\scripts\setup-passwords.ps1
+```
+
+### Stop all services
+```
+docker compose down
+```
 
 ## Current setup
 
-- Node.js / Go / Rust etc. are not yet chosen — `prd.md` suggests Go for the API gateway, React for the frontend, Mosquitto/EMQX for MQTT.
-- No package managers, linters, or formatters configured.
+- MQTT broker: Eclipse Mosquitto 2 (Docker Compose, dev build)
+- No Node.js / Go / Rust runtimes configured yet — `prd.md` suggests Go for the API gateway, React for the frontend.
+- No linters, formatters, or test frameworks configured.
